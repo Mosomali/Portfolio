@@ -7,16 +7,27 @@ import { skills } from "@/lib/data";
 export default function Skills() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [activeFilter, setActiveFilter] = useState("All");
 
-  const categories = ["All", "Frontend", "Backend", "Tools"];
+  const categories = [
+    "All",
+    "Networking Skills",
+    "Security & Tools",
+    "Operating Systems",
+    "Programming & Design",
+  ];
+
   const filteredSkills =
-    selectedCategory === "All"
+    activeFilter === "All"
       ? skills
-      : skills.filter((skill) => skill.category === selectedCategory);
+      : activeFilter === "Programming & Design"
+      ? skills.filter(
+          (skill) => skill.category === "Design" || skill.category === "Programming"
+        )
+      : skills.filter((skill) => skill.category === activeFilter);
 
   return (
-    <section id="skills" className="py-20" ref={ref}>
+    <section id="skills" className="py-20 bg-muted/30" ref={ref}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -32,63 +43,69 @@ export default function Skills() {
           </p>
         </motion.div>
 
-        {/* Category Tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-4 mb-12"
-        >
+        {/* Filter Tabs */}
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
           {categories.map((category) => (
-            <button
+            <motion.button
               key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-6 py-3 rounded-full font-semibold transition-all ${
-                selectedCategory === category
-                  ? "bg-gradient-to-r from-primary via-secondary to-accent text-white shadow-lg"
-                  : "bg-muted hover:bg-muted/80 text-foreground"
+              onClick={() => setActiveFilter(category)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
+                activeFilter === category
+                  ? "bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-500 text-white shadow-lg shadow-orange-500/30"
+                  : "bg-card text-muted-foreground hover:bg-muted border border-white/10 hover:border-orange-500/30"
               }`}
             >
               {category}
-            </button>
+            </motion.button>
           ))}
-        </motion.div>
+        </div>
 
         {/* Skills Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
           {filteredSkills.map((skill, index) => (
             <motion.div
               key={skill.name}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="bg-card p-6 rounded-2xl border border-white/10 hover:border-primary/50 transition-all group"
-              whileHover={{ y: -5, scale: 1.02 }}
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={isInView ? { opacity: 1, scale: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
+              whileHover={{ y: -10, scale: 1.05 }}
+              className="relative group cursor-pointer"
             >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="text-4xl">{skill.icon}</div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold mb-1">{skill.name}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {skill.category}
-                  </p>
-                </div>
-              </div>
+              {/* Card Background with Gradient Border */}
+              <div className="relative bg-card rounded-2xl p-6 border border-white/10 group-hover:border-orange-500/50 transition-all duration-300 shadow-lg group-hover:shadow-orange-500/20">
+                {/* Gradient Glow Effect on Hover */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-orange-500/10 via-yellow-500/10 to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
+                
+                {/* Content */}
+                <div className="relative z-10 flex flex-col items-center">
+                  {/* Icon with Background Circle */}
+                  <div className="relative mb-4">
+                    <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-yellow-500/20 rounded-full blur-md group-hover:blur-lg transition-all" />
+                    <div className="relative text-6xl transform transition-transform group-hover:scale-110 group-hover:rotate-6">
+                      {skill.icon}
+                    </div>
+                  </div>
 
-              {/* Progress Bar */}
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Proficiency</span>
-                  <span className="font-semibold text-gradient">
-                    {skill.level}%
-                  </span>
-                </div>
-                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  {/* Skill Name */}
+                  <h4 className="text-sm font-semibold text-center mb-2 px-2 leading-tight min-h-[2.5rem] flex items-center">
+                    {skill.name}
+                  </h4>
+
+                  {/* Skill Level Badge */}
+                  <div className="inline-flex items-center justify-center px-3 py-1 rounded-full bg-gradient-to-r from-orange-500/20 to-yellow-500/20 border border-orange-500/30 mb-3">
+                    <span className="text-xs font-bold bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent">
+                      {skill.level}%
+                    </span>
+                  </div>
+
+                  {/* Orange Underline with Animation */}
                   <motion.div
-                    initial={{ width: 0 }}
-                    animate={isInView ? { width: `${skill.level}%` } : {}}
-                    transition={{ duration: 1, delay: 0.5 + index * 0.05 }}
-                    className="h-full bg-gradient-to-r from-primary via-secondary to-accent rounded-full"
+                    initial={{ scaleX: 0.5 }}
+                    animate={isInView ? { scaleX: 1 } : {}}
+                    transition={{ duration: 0.6, delay: 0.3 + index * 0.05 }}
+                    className="w-full h-1 bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-500 rounded-full shadow-sm shadow-orange-500/50"
                   />
                 </div>
               </div>

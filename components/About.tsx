@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
@@ -36,10 +37,14 @@ export default function About() {
           >
             <div className="relative w-full max-w-md mx-auto aspect-square">
               <div className="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-accent rounded-3xl blur-2xl opacity-50 animate-pulse-slow" />
-              <div className="relative bg-card rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
-                <div className="aspect-square bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 flex items-center justify-center">
-                  <div className="text-9xl">👨‍💻</div>
-                </div>
+              <div className="relative bg-card rounded-3xl overflow-hidden border border-white/10 shadow-2xl h-full">
+                <Image
+                  src={personalInfo.avatar}
+                  alt={personalInfo.name}
+                  fill
+                  className="object-cover"
+                  priority
+                />
               </div>
             </div>
           </motion.div>

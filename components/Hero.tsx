@@ -103,6 +103,14 @@ export default function Hero() {
               View My Work
             </motion.a>
             <motion.a
+              href="/cv"
+              className="px-8 py-4 bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-500 text-white rounded-full font-semibold text-lg shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/50 transition-all cursor-pointer"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Download CV
+            </motion.a>
+            <motion.a
               href="#contact"
               onClick={(e) => {
                 e.preventDefault();

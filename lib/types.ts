@@ -27,3 +27,50 @@ export interface NavItem {
   name: string;
   href: string;
 }
+
+export interface Experience {
+  id: number;
+  company: string;
+  role: string;
+  period: string;
+  location: string;
+  description: string;
+}
+
+export interface Education {
+  id: number;
+  institution: string;
+  degree: string;
+  period: string;
+  location: string;
+  website?: string;
+  field?: string;
+}
+
+export interface Certification {
+  id: number;
+  name: string;
+  issuer: string;
+  date: string;
+  mode: string;
+  description?: string;
+}
+
+export interface LanguageSkill {
+  language: string;
+  level: string;
+  listening?: string;
+  reading?: string;
+  writing?: string;
+  spokenProduction?: string;
+  spokenInteraction?: string;
+}
+
+export interface NewsEvent {
+  id: number;
+  title: string;
+  description: string;
+  date: string;
+  category?: string;
+  link?: string;
+}
